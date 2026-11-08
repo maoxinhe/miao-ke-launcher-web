@@ -14,7 +14,8 @@ launcher-web/
     └── screenshots/                  # 客户端界面宣传图（本地启动器 SPA 截取）
         ├── p1-launch.png            # 启动页
         ├── p2-instances.png          # 版本与实例
-        └── p3-mods.png              # 模组与加载器
+        ├── p3-mods.png              # 模组与加载器
+        └── p4-download.png          # 下载中心（版本 / 模组 / 资源 / 光影 / Java）
 ```
 
 ## 本地预览

@@ -5,8 +5,8 @@
 - 静态站源码仓：`maoxinhe/miao-ke-launcher-web`（public，`main`，最新提交 `13d5463`）。
 - 纯静态 HTML/CSS/JS，**无构建命令**，输出目录为仓库根目录。
 - 本轮已落地：
-  - 三张客户端界面宣传图 `assets/screenshots/`（p1 启动 / p2 版本实例 / p3 模组加载器），演示实例数据。
-  - 仿 MSLX 版式重构：导航、split Hero、三组左右交错 mac-window 预览、六卡特性网格、下载卡、更新日志、FAQ 折叠、关于、页脚。
+  - 四张客户端界面宣传图 `assets/screenshots/`（p1 启动 / p2 版本实例 / p3 模组加载器 / p4 下载中心），演示实例数据。
+  - 仿 MSLX 版式重构：导航、split Hero、四组左右交错 mac-window 预览、六卡特性网格、下载卡、更新日志、FAQ 折叠、关于、页脚。
   - 云端对接 `GET https://auth.camzy.tech/api/launcher/check`：版本徽章、渠道/架构元信息、下载副标题、更新日志；`downloadUrl` 为空时隐藏下载按钮，不展示虚构入口；接口失败降级静态文案。
 - 本地已用静态服务（`python3 -m http.server 8791`）逐区块核对：桌面端 Hero / 三组预览 / 特性 / 下载 / FAQ 展开 / 关于 / 页脚正常；390px 窄屏无横向溢出，导航收起、预览纵向、特性单列。
 
