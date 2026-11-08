@@ -63,4 +63,11 @@
       renderDownload(null);
       renderChangelog(null);
     });
+
+  // FAQ 折叠
+  document.querySelectorAll('.faq-question').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.parentElement.classList.toggle('open');
+    });
+  });
 })();

@@ -6,10 +6,15 @@
 
 ```
 launcher-web/
-├── index.html        # 首页
+├── index.html        # 首页（Hero / 界面预览 / 特性 / 下载 / 日志 / FAQ / 关于）
 ├── css/style.css     # 品牌样式（粉色 #ec5c83，响应式）
-├── js/main.js        # 拉取云端版本台账，渲染版本号 / 更新日志 / 下载入口
-└── assets/          # 图标等静态资源
+├── js/main.js        # 拉取云端版本台账，渲染版本号 / 更新日志 / 下载入口；FAQ 折叠
+└── assets/
+    ├── app-icon.png                 # 启动器图标
+    └── screenshots/                  # 客户端界面宣传图（本地启动器 SPA 截取）
+        ├── p1-launch.png            # 启动页
+        ├── p2-instances.png          # 版本与实例
+        └── p3-mods.png              # 模组与加载器
 ```
 
 ## 本地预览
@@ -25,6 +30,10 @@ python3 -m http.server 8791
   - `GET https://auth.camzy.tech/api/launcher/check`
 - 台账在用户中心「启动器版本」后台维护；`downloadUrl` 为空时官网不展示下载按钮，仅提示安装包待发布，不展示虚构入口。
 - 云端只读接口已放开跨域（CORS `*`，GET/OPTIONS）。
+
+## 界面截图
+
+`assets/screenshots/` 三张图为本地启动器前端在演示实例数据下截取，用于展示界面布局与分区；图内实例名、模组列表均为演示内容，不代表线上真实账号或存档。
 
 ## EdgeOne Makers 部署
 
