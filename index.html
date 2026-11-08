@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>喵科启动器 · 喵科大 Minecraft 客户端</title>
+<meta name="description" content="喵科启动器是喵科大团队出品的 Minecraft 桌面客户端，支持多版本与加载器、模组管理、实例隔离与存档管理。" />
+<link rel="icon" type="image/png" href="assets/app-icon.png" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <img src="assets/app-icon.png" alt="喵科启动器" class="brand-ico" />
+      <span class="brand-name">喵科启动器</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#features">特性</a>
+      <a href="#download">下载</a>
+      <a href="#changelog">更新日志</a>
+      <a href="#about">关于</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="#download">立即下载</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-text">
+        <span class="hero-badge" id="versionBadge">桌面客户端 · Windows</span>
+        <h1>为 Minecraft 玩家打造的<br />轻量启动器</h1>
+        <p class="hero-sub">多版本与加载器管理、模组安装、实例隔离、存档备份，一站式完成。启动后自动向云端上报版本并检查更新，始终使用最新版本。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#download">下载客户端</a>
+          <a class="btn btn-ghost btn-lg" href="#features">查看特性</a>
+        </div>
+        <div class="hero-meta" id="heroMeta"></div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <img src="assets/app-icon.png" alt="" class="hero-icon" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 特性 -->
+  <section id="features" class="section">
+    <div class="wrap">
+      <h2 class="section-title">核心特性</h2>
+      <p class="section-sub">围绕开服、联机与模组体验设计，功能均可在客户端内直接使用。</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-ico">◈</div>
+          <h3>多版本与加载器</h3>
+          <p>支持官方正式版、快照与历史版本，可搭配 Fabric、Forge、NeoForge、Quilt 等加载器安装。</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">✦</div>
+          <h3>模组与资源管理</h3>
+          <p>集中管理模组、光影与资源包，按实例隔离配置，互不干扰。</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">▤</div>
+          <h3>实例隔离</h3>
+          <p>每个实例拥有独立运行目录，存档、模组与配置彼此独立，便于多环境切换。</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">◷</div>
+          <h3>存档管理与备份</h3>
+          <p>查看与管理本地存档，支持备份存档，降低误操作带来的进度丢失风险。</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">◎</div>
+          <h3>账户接入</h3>
+          <p>支持离线登录与外置皮肤站（Yggdrasil）接入，账户令牌仅保留在本机宿主侧。</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">⟳</div>
+          <h3>云端版本自检</h3>
+          <p>启动时上报本地版本并比对云端台账，发现新版本时提示更新，可查看更新日志与下载入口。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下载 -->
+  <section id="download" class="section section-alt">
+    <div class="wrap download-inner">
+      <h2 class="section-title">下载客户端</h2>
+      <p class="section-sub">安装包按「产品名_打包日期_架构_版本」规范命名，发布前在云端台账登记最新版本号。</p>
+      <div class="download-card" id="downloadCard">
+        <div class="download-main">
+          <div class="dl-ico">⬇</div>
+          <div>
+            <h3>喵科启动器 Windows 版</h3>
+            <p class="dl-sub" id="dlSub">当前最新版本以云端台账为准。</p>
+          </div>
+        </div>
+        <div class="dl-actions" id="dlActions">
+          <span class="dl-pending">安装包发布后将在此提供下载入口</span>
+        </div>
+      </div>
+      <p class="download-note">系统要求：Windows 10 / 11（64 位）；运行需具备 .NET 8 运行环境，免安装外壳已内置所需依赖。</p>
+    </div>
+  </section>
+
+  <!-- 更新日志 -->
+  <section id="changelog" class="section">
+    <div class="wrap">
+      <h2 class="section-title">更新日志</h2>
+      <p class="section-sub">最新版本说明由云端台账维护，启动器自检时同步展示。</p>
+      <div class="changelog" id="changelogBox">
+        <div class="empty">暂无更多版本说明。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于 -->
+  <section id="about" class="section section-alt">
+    <div class="wrap about-inner">
+      <h2 class="section-title">关于喵科大</h2>
+      <p class="about-text">喵科大是围绕 Minecraft 服务器生态组建的团队，提供启动器、用户中心、服务器状态与工具链等配套服务。本站为喵科启动器官方介绍与下载入口，版本台账与更新检查对接统一用户中心。</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>© 喵科大 · 喵科启动器</span>
+    <span class="footer-meta">Minecraft 是 Mojang Studios 的注册商标，本站与 Mojang 无关联。</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
