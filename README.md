@@ -1,49 +1,36 @@
-# 喵科启动器官网（launcher.camzy.tech）
+# 拾启｜LumeStart 官网（launcher.camzy.tech）
 
-喵科启动器官方介绍与下载入口静态站点，部署于 **EdgeOne Makers**（优先 EdgeOne 承载，给 Cloudflare 减压）。
+官方介绍与下载入口，纯静态、无构建命令，部署于 **EdgeOne Makers**。
 
 ## 目录结构
 
 ```
-launcher-web/
-├── index.html        # 首页（Hero / 界面预览 / 特性 / 下载 / 日志 / FAQ / 关于）
-├── css/style.css     # 品牌样式（粉色 #ec5c83，响应式）
-├── js/main.js        # 拉取云端版本台账，渲染版本号 / 更新日志 / 下载入口；FAQ 折叠
-└── assets/
-    ├── app-icon.png                 # 启动器图标
-    └── screenshots/                  # 客户端界面宣传图（本地启动器 SPA 截取）
-        ├── p1-launch.png            # 启动页
-        ├── p2-instances.png          # 版本与实例
-        ├── p3-mods.png              # 模组与加载器
-        └── p4-download.png          # 下载中心（版本 / 模组 / 资源 / 光影 / Java）
+.
+├── index.html          # 单文件官网（内联 CSS / SVG，无外部 JS 依赖）
+├── assets/
+│   ├── ui-settings.png # 设置页（Hero）
+│   ├── ui-download.png # 下载中心
+│   └── ui-network.png  # 多人联机
+├── legacy-2026-11/     # 旧版粉色站，仅留档，不参与部署
+├── DEPLOY_MAKERS.md    # Makers 部署步骤与能力边界
+└── README.md
 ```
 
 ## 本地预览
 
 ```bash
 python3 -m http.server 8791
-# 浏览器打开 http://127.0.0.1:8791/index.html
+# 打开 http://127.0.0.1:8791/index.html
 ```
 
-## 数据对接
+## 内容口径
 
-- 版本号、更新日志、下载地址均来自云端台账，前端只读拉取：
-  - `GET https://auth.camzy.tech/api/launcher/check`
-- 台账在用户中心「启动器版本」后台维护；`downloadUrl` 为空时官网不展示下载按钮，仅提示安装包待发布，不展示虚构入口。
-- 云端只读接口已放开跨域（CORS `*`，GET/OPTIONS）。
-
-## 界面截图
-
-`assets/screenshots/` 三张图为本地启动器前端在演示实例数据下截取，用于展示界面布局与分区；图内实例名、模组列表均为演示内容，不代表线上真实账号或存档。
+- 品牌名固定为「拾启｜LumeStart」，进程名与发布产物保持 `LumeStart.exe` / `LumeStart_<YYMMDD>_x64_<序号>.zip`。
+- 不出现管理后台域名；技术形态写明「.NET 8 WPF、无 WebView2、无网页层」。
+- 下载入口指向公开发布仓库 `MaoKeDei/launcher_v1` 的 Releases，不放直链，避免包名/哈希变更后失效。
+- 三张界面图为**设计还原稿**，图注已标明，不作为实机截图使用。
+- 版本号与 build 为静态文案，发版时同步更新（1.1.0 / build 38）。
 
 ## EdgeOne Makers 部署
 
-1. 登录 EdgeOne 控制台 → **Makers** → **创建项目** → **导入 Git 仓库**，授权并选择本仓库。
-2. 构建配置：无构建命令，输出目录为仓库根目录（静态 HTML/CSS/JS）。
-3. 部署后在 **域名管理 → 自定义域名** 添加 `launcher.camzy.tech`，按指引配置 CNAME。
-4. DNS（DNSPod 托管 `camzy.tech`）：按 Makers 分配的 CNAME 目标添加 `launcher` 记录；如平台要求归属验证，补充 `_dnsauth.launcher` TXT 记录。
-5. 证书由 EdgeOne 自动签发。
-
-## 计费边界
-
-保持免费，不开启智能加速 / VAU、QUIC、媒体处理、Bot 管理等付费增值项。
+见 `DEPLOY_MAKERS.md`。要点：无构建命令、输出目录为仓库根目录；创建项目与绑定自定义域名仍需在控制台完成。

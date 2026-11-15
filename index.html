@@ -2,270 +2,374 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>喵科启动器 · 喵科大 Minecraft 客户端</title>
-<meta name="description" content="喵科启动器是喵科大团队出品的 Minecraft 桌面客户端，支持多版本与加载器、模组光影管理、实例隔离与存档备份，启动后自动上报版本并检查更新。" />
-<link rel="icon" type="image/png" href="assets/app-icon.png" />
-<link rel="stylesheet" href="css/style.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>拾启｜LumeStart · 原生 Minecraft 启动器</title>
+<meta name="description" content="拾启｜LumeStart 是基于 .NET 8 WPF 的原生 Minecraft 启动器：八个页面全部原生实现，不依赖 WebView2 与任何网页层，下载、实例、模组、联机、存档一站式管理。" />
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316181C'/%3E%3Cpath d='M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z' fill='%23E8B45A'/%3E%3C/svg%3E" />
+<style>
+:root{
+  --ink:#16181C;
+  --ink-soft:#4A4E55;
+  --ink-faint:#8A8F96;
+  --paper:#FFFFFF;
+  --paper-2:#FAFAF8;
+  --line:#E3E4E1;
+  --line-strong:#CFD1CC;
+  --accent:#A85B1E;
+  --accent-soft:#F4E7D7;
+  --ok:#2F6B4F;
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans SC","HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  font-size:16px;line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+@media (max-width:640px){.wrap{padding:0 20px}}
+
+/* ---------- 顶栏 ---------- */
+header{
+  position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;gap:28px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.01em}
+.brand svg{width:26px;height:26px}
+.brand span.tiny{font-size:12px;font-weight:400;color:var(--ink-faint);letter-spacing:.06em}
+.nav .links{display:flex;gap:24px;font-size:14px;color:var(--ink-soft);margin-left:auto}
+.nav .links a{position:relative;padding:4px 0}
+.nav .links a:hover{color:var(--ink)}
+.nav .cta{font-size:14px;border:1px solid var(--line-strong);padding:7px 16px;border-radius:6px;color:var(--ink)}
+.nav .cta:hover{border-color:var(--ink)}
+@media (max-width:860px){.nav .links{display:none}}
+
+/* ---------- Hero ---------- */
+.hero{padding:76px 0 64px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+.eyebrow{font-size:13px;color:var(--accent);letter-spacing:.02em;margin:0 0 14px}
+h1{
+  margin:0;font-size:clamp(34px,4.6vw,56px);line-height:1.18;letter-spacing:-.02em;font-weight:600;
+}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{margin:22px 0 0;color:var(--ink-soft);font-size:16.5px;max-width:34em}
+.btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:6px;
+  font-size:14.5px;font-weight:500;border:1px solid transparent;transition:.16s ease;
+}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.primary:hover{background:#000;transform:translateY(-1px)}
+.btn.ghost{border-color:var(--line-strong);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn svg{width:16px;height:16px}
+.meta{margin-top:16px;font-size:12.5px;color:var(--ink-faint);display:flex;gap:18px;flex-wrap:wrap}
+.hero-shot{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper-2)}
+.hero-shot img{width:100%;height:auto}
+.shot-cap{font-size:12px;color:var(--ink-faint);padding:10px 14px;border-top:1px solid var(--line);background:#fff}
+
+/* ---------- 数据条 ---------- */
+.stats{border-bottom:1px solid var(--line)}
+.stats-in{display:grid;grid-template-columns:repeat(4,1fr);divide:1px}
+.stat{padding:26px 0;border-right:1px solid var(--line)}
+.stat:first-child{padding-left:0}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-size:26px;font-weight:600;letter-spacing:-.01em}
+.stat small{display:block;margin-top:4px;font-size:12.5px;color:var(--ink-faint)}
+@media (max-width:760px){.stats-in{grid-template-columns:repeat(2,1fr)}.stat{border-bottom:1px solid var(--line)}}
+
+/* ---------- 章节 ---------- */
+section{padding:76px 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:40px;align-items:end;margin-bottom:44px}
+@media (max-width:860px){.sec-head{grid-template-columns:1fr;gap:14px}}
+h2{margin:0;font-size:clamp(24px,2.6vw,32px);line-height:1.3;font-weight:600;letter-spacing:-.01em}
+.sec-head p{margin:0;color:var(--ink-soft);font-size:15px}
+
+.feature{display:grid;grid-template-columns:220px minmax(0,1fr);gap:36px;padding:30px 0;border-top:1px solid var(--line)}
+.feature:last-child{border-bottom:1px solid var(--line)}
+.feature h3{margin:0;font-size:17px;font-weight:600}
+.feature .tagline{font-size:12.5px;color:var(--ink-faint);margin-top:6px}
+.feature p{margin:0;color:var(--ink-soft);font-size:14.8px;max-width:62ch}
+.feature ul{margin:12px 0 0;padding-left:18px;color:var(--ink-soft);font-size:14.5px}
+.feature ul li{margin:4px 0}
+@media (max-width:760px){.feature{grid-template-columns:1fr;gap:10px;padding:24px 0}}
+
+/* ---------- 截图 ---------- */
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.gallery figure{margin:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper-2)}
+.gallery figcaption{font-size:12px;color:var(--ink-faint);padding:10px 14px;background:#fff;border-top:1px solid var(--line)}
+@media (max-width:760px){.gallery{grid-template-columns:1fr}}
+
+/* ---------- 下载 ---------- */
+.download{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dl-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:start}
+@media (max-width:900px){.dl-grid{grid-template-columns:1fr}}
+.dl-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px}
+.dl-card .ver{display:flex;align-items:baseline;gap:10px}
+.dl-card .ver b{font-size:22px;font-weight:600}
+.badge{font-size:11.5px;padding:2px 8px;border:1px solid var(--line-strong);border-radius:999px;color:var(--ink-soft)}
+.badge.live{border-color:#BFD8C9;background:#F1F7F3;color:var(--ok)}
+.dl-note{font-size:13px;color:var(--ink-soft);margin-top:10px}
+.dl-actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.filelist{margin-top:22px;border-top:1px solid var(--line);padding-top:16px;font-size:13px;color:var(--ink-soft)}
+.filelist div{display:flex;justify-content:space-between;padding:6px 0}
+.filelist span{color:var(--ink-faint)}
+.req h3{margin:0 0 10px;font-size:15px;font-weight:600}
+.req p{margin:0;font-size:14px;color:var(--ink-soft)}
+.req ul{margin:14px 0 0;padding-left:18px;font-size:14px;color:var(--ink-soft)}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:780px}
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq summary{cursor:pointer;font-size:15.5px;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:18px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .plus{color:var(--ink-faint);font-weight:400}
+.faq details[open] summary .plus{color:var(--accent)}
+.faq p{margin:10px 0 0;font-size:14.5px;color:var(--ink-soft);max-width:64ch}
+
+footer{border-top:1px solid var(--line);padding:44px 0 54px;font-size:13px;color:var(--ink-faint)}
+.foot{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-start}
+.foot .links{display:flex;gap:22px;flex-wrap:wrap}
+.foot a:hover{color:var(--ink)}
+</style>
 </head>
 <body>
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top">
-      <img src="assets/app-icon.png" alt="喵科启动器" class="brand-ico" />
-      <span class="brand-name">喵科启动器</span>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="拾启 LumeStart 首页">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#16181C"/><path d="M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z" fill="#E8B45A"/></svg>
+      <span>拾启</span><span class="tiny">LUMESTART</span>
     </a>
-    <nav class="nav-links">
+    <nav class="links" aria-label="主导航">
       <a href="#features">特性</a>
-      <a href="#showcase">界面预览</a>
+      <a href="#native">原生界面</a>
       <a href="#download">下载</a>
-      <a href="#changelog">更新日志</a>
       <a href="#faq">常见问题</a>
-      <a href="#about">关于</a>
     </nav>
-    <div class="nav-actions">
-      <a class="nav-gh" href="https://github.com/maoxinhe/miao-ke-launcher" target="_blank" rel="noopener" aria-label="GitHub">
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-      </a>
-      <a class="btn btn-primary nav-cta" href="#download">立即下载</a>
-    </div>
+    <a class="cta" href="https://github.com/MaoKeDei/launcher_v1/releases" target="_blank" rel="noopener">GitHub Releases</a>
   </div>
 </header>
 
 <main id="top">
-  <!-- Hero -->
-  <section class="hero">
-    <div class="wrap hero-inner">
-      <div class="hero-text">
-        <span class="hero-tagline" id="versionBadge">桌面客户端 · Windows</span>
-        <h1>喵科启动器</h1>
-        <p class="hero-sub">轻量、整洁的 Minecraft 桌面客户端。多版本与加载器、模组光影、实例隔离与存档备份一站完成；启动后自动上报版本并比对云端台账，始终使用最新版本。</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary btn-lg" href="#download">下载客户端</a>
-          <a class="btn btn-ghost btn-lg" href="#showcase">查看界面</a>
-        </div>
-        <div class="hero-meta" id="heroMeta"></div>
-        <div class="hero-platforms">
-          <span class="platform-label">支持平台</span>
-          <span class="platform-chip">Windows</span>
-          <span class="platform-chip">macOS</span>
-          <span class="platform-chip">Linux</span>
-        </div>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">.NET 8 · WPF · Windows 10 / 11 · x64</p>
+      <h1>一个<em>不套网页</em>的<br>Minecraft 启动器</h1>
+      <p class="lede">拾启｜LumeStart 把启动、实例、模组、下载、存档、联机、账户、设置全部做成原生窗口。没有 WebView2，没有内嵌浏览器，也就没有白屏、没有加载等待、没有网页层里才能做的操作。</p>
+      <div class="btnrow">
+        <a class="btn primary" href="#download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+          下载启动器
+        </a>
+        <a class="btn ghost" href="https://github.com/MaoKeDei/launcher_v1" target="_blank" rel="noopener">发布仓库</a>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="modern-bg">
-          <div class="glow glow-primary"></div>
-          <div class="glow glow-secondary"></div>
-          <div class="orbit-ring"></div>
-        </div>
-        <div class="tag-wrapper"><span class="cloud-tag"><i>⚡</i>极速启动</span></div>
-        <div class="tag-wrapper"><span class="cloud-tag"><i>▤</i>实例隔离</span></div>
-        <div class="tag-wrapper"><span class="cloud-tag"><i>✦</i>模组管理</span></div>
-        <div class="tag-wrapper"><span class="cloud-tag"><i>⟳</i>云端自检</span></div>
-        <div class="tag-wrapper"><span class="cloud-tag"><i>◷</i>存档备份</span></div>
-        <div class="tag-wrapper"><span class="cloud-tag"><i>◈</i>多加载器</span></div>
+      <div class="meta">
+        <span>自包含包 · 无需另装 .NET 运行时</span>
+        <span>SHA256 校验 · 灰度更新</span>
       </div>
     </div>
-  </section>
+    <figure class="hero-shot" style="margin:0">
+      <img src="assets/ui-settings.png" alt="拾启｜LumeStart 设置页：左侧原生侧栏、内存渐变滑条与下载源" />
+      <figcaption class="shot-cap">设置页 · 原生侧栏与内存渐变滑条（界面预览稿）</figcaption>
+    </figure>
+  </div>
+</section>
 
-  <!-- 界面预览：三组左右交错 -->
-  <section id="showcase" class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-title">界面预览</h2>
-        <p class="section-sub">围绕开玩、管理与定制设计，功能均可在客户端内直接使用。</p>
+<!-- ===== 数据条 ===== -->
+<div class="stats">
+  <div class="wrap stats-in">
+    <div class="stat"><b>8</b><small>页面全部原生实现</small></div>
+    <div class="stat"><b>0</b><small>网页层与 WebView2 依赖</small></div>
+    <div class="stat"><b>约 79 MB</b><small>自包含安装包大小</small></div>
+    <div class="stat"><b>3</b><small>更新下载源白名单</small></div>
+  </div>
+</div>
+
+<!-- ===== 特性 ===== -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>把启动器做成桌面程序，<br>而不是一个网页壳</h2>
+      <p>网页套壳的代价不在"能不能用"，而在每次操作都要等一层浏览器：白屏、加载骨架、右键菜单、输入法、拖拽文件、系统托盘，处处错位。原生之后，这些都由 Windows 自己处理。</p>
+    </div>
+
+    <div class="feature">
+      <div>
+        <h3>原生界面</h3>
+        <div class="tagline">WPF · XAML</div>
       </div>
-
-      <div class="showcase-row">
-        <div class="showcase-image">
-          <div class="image-glow"></div>
-          <div class="mac-window">
-            <div class="mac-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-            <div class="mac-body"><img src="assets/screenshots/p1-launch.png" alt="一键启动界面" loading="lazy" /></div>
-          </div>
-        </div>
-        <div class="showcase-text">
-          <div class="text-header">
-            <h3 class="showcase-title">一键启动，选好实例直接开玩</h3>
-            <p class="showcase-desc">告别繁琐的命令行与配置，在可视化界面里完成启动前的全部准备。</p>
-          </div>
-          <div class="details-list">
-            <div class="detail-item"><div class="detail-ico">▶</div><div><h4>当前实例概览</h4><p>版本、加载器、内存、光影与模组数量一目了然，就绪状态清晰可见。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">⚙</div><div><h4>启动设置</h4><p>账户类型、游戏名、内存分配与 Java 匹配集中管理，可随时调整。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">◷</div><div><h4>最近实例</h4><p>常用实例快捷进入，多环境切换无需重复查找。</p></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="showcase-row reverse">
-        <div class="showcase-image">
-          <div class="image-glow"></div>
-          <div class="mac-window">
-            <div class="mac-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-            <div class="mac-body"><img src="assets/screenshots/p2-instances.png" alt="版本与实例界面" loading="lazy" /></div>
-          </div>
-        </div>
-        <div class="showcase-text">
-          <div class="text-header">
-            <h3 class="showcase-title">版本与实例，彼此隔离</h3>
-            <p class="showcase-desc">每个实例拥有独立运行目录，存档、模组与配置互不干扰。</p>
-          </div>
-          <div class="details-list">
-            <div class="detail-item"><div class="detail-ico">◈</div><div><h4>官方版本与快照</h4><p>支持正式版与历史快照，按版本号与发布日期选择。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">✦</div><div><h4>多加载器</h4><p>可搭配 Fabric、Forge、NeoForge、Quilt 等加载器安装。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">▤</div><div><h4>独立运行目录</h4><p>开启版本隔离后，不同实例的模组、存档与配置各自独立。</p></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="showcase-row">
-        <div class="showcase-image">
-          <div class="image-glow"></div>
-          <div class="mac-window">
-            <div class="mac-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-            <div class="mac-body"><img src="assets/screenshots/p3-mods.png" alt="模组与加载器界面" loading="lazy" /></div>
-          </div>
-        </div>
-        <div class="showcase-text">
-          <div class="text-header">
-            <h3 class="showcase-title">模组、光影与资源包集中管理</h3>
-            <p class="showcase-desc">按实例安装与管理内容，启用、移除随时可控。</p>
-          </div>
-          <div class="details-list">
-            <div class="detail-item"><div class="detail-ico">✦</div><div><h4>按实例安装模组</h4><p>模组目录按用途分类，支持加载器与版本筛选，安装到指定实例。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">◐</div><div><h4>光影与资源包</h4><p>光影、材质与 HUD 资源包分别管理，与模组配置互不冲突。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">✓</div><div><h4>启用状态可控</h4><p>已装内容显示启用状态，可单独移除，不影响其他实例。</p></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="showcase-row reverse">
-        <div class="showcase-image">
-          <div class="image-glow"></div>
-          <div class="mac-window">
-            <div class="mac-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-            <div class="mac-body"><img src="assets/screenshots/p4-download.png" alt="下载中心界面" loading="lazy" /></div>
-          </div>
-        </div>
-        <div class="showcase-text">
-          <div class="text-header">
-            <h3 class="showcase-title">下载中心，版本与内容统一入口</h3>
-            <p class="showcase-desc">游戏版本、模组、资源包、光影与运行时集中下载，任务统一汇入队列管理。</p>
-          </div>
-          <div class="details-list">
-            <div class="detail-item"><div class="detail-ico">◈</div><div><h4>游戏版本安装</h4><p>正式版、快照与历史版本一键安装核心与依赖库。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">✦</div><div><h4>内容筛选检索</h4><p>模组、资源包与光影支持关键词搜索、加载器与分类筛选，可装到指定实例。</p></div></div>
-            <div class="detail-item"><div class="detail-ico">⟳</div><div><h4>下载队列管理</h4><p>排队、下载中、暂停、继续、重试与完成状态统一展示，进度与大小实时可见。</p></div></div>
-          </div>
-        </div>
+      <div>
+        <p>窗口、侧栏、列表、弹窗全部由 XAML 绘制。侧栏可收起到 64px 只留图标，页面切换是内存里的路由历史，后退/前进与窗口快捷键都按桌面习惯工作。</p>
+        <ul>
+          <li>无边框窗口 + 自绘标题栏，拖动、缩放、最大化符合系统行为</li>
+          <li>字体与图标随包分发，离线也不回退成宋体</li>
+          <li>设置页内存滑条为六色渐变轨道，拖动即时生效</li>
+        </ul>
       </div>
     </div>
-  </section>
 
-  <!-- 特性 -->
-  <section id="features" class="section section-alt">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-title">核心特性</h2>
-        <p class="section-sub">围绕开玩、联机与定制体验设计，功能均可在客户端内直接使用。</p>
+    <div class="feature">
+      <div>
+        <h3>实例与版本</h3>
+        <div class="tagline">Forge · Fabric · NeoForge · Quilt</div>
       </div>
-      <div class="grid">
-        <div class="card"><div class="card-ico">◈</div><h3>多版本与加载器</h3><p>支持官方正式版、快照与历史版本，可搭配 Fabric、Forge、NeoForge、Quilt 等加载器安装。</p></div>
-        <div class="card"><div class="card-ico">✦</div><h3>模组与资源管理</h3><p>集中管理模组、光影与资源包，按实例隔离配置，互不干扰。</p></div>
-        <div class="card"><div class="card-ico">▤</div><h3>实例隔离</h3><p>每个实例拥有独立运行目录，存档、模组与配置彼此独立，便于多环境切换。</p></div>
-        <div class="card"><div class="card-ico">◷</div><h3>存档管理与备份</h3><p>查看与管理本地存档，支持备份存档，降低误操作带来的进度丢失风险。</p></div>
-        <div class="card"><div class="card-ico">◎</div><h3>账户接入</h3><p>支持离线登录与外置皮肤站（Yggdrasil）接入，账户令牌仅保留在本机宿主侧。</p></div>
-        <div class="card"><div class="card-ico">⟳</div><h3>云端版本自检</h3><p>启动时上报本地版本并比对云端台账，发现新版本时提示更新，可查看更新日志与下载入口。</p></div>
+      <div>
+        <p>新建实例不再跳转网页：选版本、选加载器、填内存、挑 Java，一次表单走完。实例列表支持启动、重命名、复制、删除，删除只作用于实例目录，不碰存档与账号。</p>
+        <ul>
+          <li>加载器安装回填真实版本号，失败有错误码可查</li>
+          <li>启动直读本地 JSON，不再靠界面假进度条</li>
+          <li>游戏退出后按钮自动回弹，可连续启动</li>
+        </ul>
       </div>
     </div>
-  </section>
 
-  <!-- 下载 -->
-  <section id="download" class="section">
-    <div class="wrap download-inner">
-      <div class="section-head">
-        <h2 class="section-title">下载客户端</h2>
-        <p class="section-sub">安装包按「产品名_打包日期_架构_版本」规范命名，发布前在云端台账登记最新版本号。</p>
+    <div class="feature">
+      <div>
+        <h3>下载中心</h3>
+        <div class="tagline">队列 · 并发 · 断点</div>
       </div>
-      <div class="download-card" id="downloadCard">
-        <div class="download-main">
-          <div class="dl-ico">⬇</div>
-          <div>
-            <h3>喵科启动器 Windows 版</h3>
-            <p class="dl-sub" id="dlSub">当前最新版本以云端台账为准。</p>
-          </div>
-        </div>
-        <div class="dl-actions" id="dlActions">
-          <span class="dl-pending">安装包发布后将在此提供下载入口</span>
-        </div>
-      </div>
-      <p class="download-note">系统要求：Windows 10 / 11（64 位）；运行需具备 .NET 8 运行环境，免安装外壳已内置所需依赖。</p>
-    </div>
-  </section>
-
-  <!-- 更新日志 -->
-  <section id="changelog" class="section section-alt">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-title">更新日志</h2>
-        <p class="section-sub">最新版本说明由云端台账维护，启动器自检时同步展示。</p>
-      </div>
-      <div class="changelog" id="changelogBox">
-        <div class="empty">暂无更多版本说明。</div>
+      <div>
+        <p>版本、模组、整合包、资源包、光影、Java 运行时统一进一条队列，最多两路并发。任务可暂停、继续、取消、清除，队列状态落在本地文件，重启后仍在。</p>
+        <ul>
+          <li>官方清单与镜像源可切，国内网络不必硬扛</li>
+          <li>整合包与资源包直连 Modrinth，不必手动找链接</li>
+          <li>进度、速度、剩余时间逐任务显示</li>
+        </ul>
       </div>
     </div>
-  </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="section">
-    <div class="wrap faq-inner">
-      <div class="section-head">
-        <h2 class="section-title">常见问题</h2>
-        <p class="section-sub">关于喵科启动器的常见疑问，可在这里找到答案。</p>
+    <div class="feature">
+      <div>
+        <h3>账户与联机</h3>
+        <div class="tagline">离线 · 微软 · 外置登录</div>
       </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-question" type="button"><span>启动器支持什么系统平台？</span><span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>当前桌面外壳面向 Windows 10 / 11（64 位）提供；版本、加载器与模组目录逻辑同时兼容 macOS 与 Linux 环境，后续版本将逐步补齐对应安装包。</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button"><span>运行需要额外安装什么环境？</span><span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>免安装外壳已内置所需 .NET 8 运行依赖；游戏运行所需 Java 可在下载中心按版本选择对应运行时，启动器支持自动匹配。</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button"><span>不同实例的存档和模组会互相影响吗？</span><span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>不会。开启版本隔离后，每个实例拥有独立运行目录，模组、光影、资源包与存档分别存放，切换实例互不干扰。</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button"><span>新版本是怎么提示更新的？</span><span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>启动时客户端会自动向云端上报本地版本并比对台账；检测到新版本时弹窗展示最新版本号、更新日志与下载入口，强制更新会单独标注。更新判断由云端台账完成，不强制内嵌在本地。</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button"><span>账户信息会上传到云端吗？</span><span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>离线登录与外置皮肤站的账户令牌仅保留在本机宿主侧；版本上报只包含本地版本号、架构与操作系统类型，用于更新判断，不上传账户凭据。</p></div>
-        </div>
+      <div>
+        <p>账户窗口支持离线 UUID、微软设备码登录、外置皮肤站登录三种方式，切换与删除都在同一个列表里完成。联机页负责陶瓦联机组件下载、房间创建与端口探测。</p>
+        <ul>
+          <li>微软登录走设备码，不需要内嵌浏览器</li>
+          <li>离线 UUID 按 <code>OfflinePlayer:名称</code> 规则生成</li>
+          <li>端口被占用时有明确提示，不静默失败</li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 关于 -->
-  <section id="about" class="section section-alt">
-    <div class="wrap about-inner">
-      <div class="section-head">
-        <h2 class="section-title">关于喵科大</h2>
-      </div>
-      <p class="about-text">喵科大是围绕 Minecraft 服务器生态组建的团队，提供启动器、用户中心、服务器状态与工具链等配套服务。本站为喵科启动器官方介绍与下载入口，版本台账与更新检查对接统一用户中心。</p>
+<!-- ===== 原生界面截图 ===== -->
+<section id="native" style="background:var(--paper-2);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>界面一览</h2>
+      <p>下面两张是设计还原稿，用于说明布局与配色；实际运行效果以安装后的程序为准。</p>
     </div>
-  </section>
+    <div class="gallery">
+      <figure>
+        <img src="assets/ui-download.png" alt="下载中心：下载队列与官方版本清单" />
+        <figcaption>下载中心 · 队列在跑，旧任务可暂停</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/ui-network.png" alt="多人联机：陶瓦联机组件与房间端口" />
+        <figcaption>多人联机 · 组件就位与端口探测</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 下载 ===== -->
+<section class="download" id="download">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>下载</h2>
+      <p>发布产物统一放在公开仓库的 Releases 中。文件为整包 zip，解压即用，不写注册表、不装服务。</p>
+    </div>
+    <div class="dl-grid">
+      <div class="dl-card">
+        <div class="ver"><b>1.1.0</b><span class="badge live">灰度发布中</span><span class="badge">build 38</span></div>
+        <p class="dl-note">原生界面全量迁移完成，移除 WebView2 与全部网页资源；更新检查与启动上报接入云端。</p>
+        <div class="dl-actions">
+          <a class="btn primary" href="https://github.com/MaoKeDei/launcher_v1/releases/latest" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+            前往下载
+          </a>
+          <a class="btn ghost" href="https://github.com/MaoKeDei/launcher_v1/releases" target="_blank" rel="noopener">历史版本</a>
+        </div>
+        <div class="filelist">
+          <div><span>文件名</span>LumeStart_&lt;日期&gt;_x64_&lt;序号&gt;.zip</div>
+          <div><span>形态</span>自包含（win-x64）</div>
+          <div><span>校验</span>SHA256（见发布页说明）</div>
+          <div><span>数据目录</span>程序同目录 <code>data/</code></div>
+        </div>
+      </div>
+      <div class="req">
+        <h3>运行要求</h3>
+        <p>Windows 10 1809 及以上或 Windows 11，64 位。自包含包已带运行时，无需另装 .NET。</p>
+        <ul>
+          <li>建议 4 GB 以上内存；实例内存可在设置里单独分配</li>
+          <li>首次启动会在程序目录创建 <code>data/</code>，账号、实例、存档都在这里</li>
+          <li>更新由启动器自行下载整包并替换，玩家数据不会被覆盖</li>
+          <li>不需要安装 WebView2 Runtime，也不再请求任何网页资源</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>常见问题</h2>
+      <p>与安装、升级、数据安全相关的几个问题。</p>
+    </div>
+    <div class="faq">
+      <details>
+        <summary><span>启动器需要联网吗？</span><span class="plus">+</span></summary>
+        <p>下载游戏、模组、加载器需要联网；已经装好的实例可以离线启动。启动时会上报一次版本与运行状态，用于判断是否需要更新，不包含任何账号信息。</p>
+      </details>
+      <details>
+        <summary><span>更新会不会覆盖我的存档和账号？</span><span class="plus">+</span></summary>
+        <p>不会。更新只覆盖程序文件，<code>data/</code> 目录（账号、实例、存档、下载队列、设备标识）原地保留。替换脚本使用只覆盖不删除的方式，不会清理未知文件。</p>
+      </details>
+      <details>
+        <summary><span>为什么安装包比旧版小了很多？</span><span class="plus">+</span></summary>
+        <p>旧版把整套网页资源与 WebView2 一起打包，体积接近 200 MB。移除网页层后只剩程序、运行时与字体图标，自包含包约 79 MB。</p>
+      </details>
+      <details>
+        <summary><span>支持哪些加载器？</span><span class="plus">+</span></summary>
+        <p>Forge、Fabric、NeoForge、Quilt 与官方版本。安装失败会给出错误码，可在实例详情里重试，不需要重新建实例。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<footer class="footer">
-  <div class="wrap footer-inner">
-    <span>© 喵科大 · 喵科启动器</span>
-    <span class="footer-meta">Minecraft 是 Mojang Studios 的注册商标，本站与 Mojang 无关联。</span>
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div style="color:var(--ink);font-weight:600;margin-bottom:6px">拾启｜LumeStart</div>
+      <div>原生 Minecraft 启动器 · .NET 8 WPF</div>
+    </div>
+    <div class="links">
+      <a href="https://github.com/MaoKeDei/launcher_v1" target="_blank" rel="noopener">发布仓库</a>
+      <a href="https://github.com/MaoKeDei/miao-ke-launcher" target="_blank" rel="noopener">源码仓库</a>
+      <a href="#download">下载</a>
+      <a href="#faq">常见问题</a>
+    </div>
   </div>
 </footer>
 
-<script src="js/main.js"></script>
 </body>
 </html>

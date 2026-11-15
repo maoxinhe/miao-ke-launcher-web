@@ -2,12 +2,14 @@
 
 ## 一、本地已完成并推送
 
-- 静态站源码仓：`maoxinhe/miao-ke-launcher-web`（public，`main`，最新提交 `13d5463`）。
-- 纯静态 HTML/CSS/JS，**无构建命令**，输出目录为仓库根目录。
+- 静态站源码仓：`maoxinhe/miao-ke-launcher-web`（public，`main`）。
+- **2026-11-15 整站重做**：换成「拾启｜LumeStart」新品牌（去掉粉色旧视觉与网页套壳时代的宣传图），单文件 `index.html` 内联 CSS/SVG，无构建命令，输出目录为仓库根目录。
+- 旧版粉色站整体移到 `legacy-2026-11/` 留档，不参与部署。
 - 本轮已落地：
   - 四张客户端界面宣传图 `assets/screenshots/`（p1 启动 / p2 版本实例 / p3 模组加载器 / p4 下载中心），演示实例数据。
   - 仿 MSLX 版式重构：导航、split Hero、四组左右交错 mac-window 预览、六卡特性网格、下载卡、更新日志、FAQ 折叠、关于、页脚。
-  - 云端对接 `GET https://auth.camzy.tech/api/launcher/check`：版本徽章、渠道/架构元信息、下载副标题、更新日志；`downloadUrl` 为空时隐藏下载按钮，不展示虚构入口；接口失败降级静态文案。
+  - 新版不再在浏览器端拉版本接口：官网只做品牌展示与跳转，版本号/build 为静态文案，发版时同步改 `index.html`。原因：跨域与接口变更都会让首页出现“版本号空白”，官网不该依赖台账接口可用性。
+  - 下载入口指向 `https://github.com/MaoKeDei/launcher_v1/releases`，不放直链、不写死包名哈希。
 - 本地已用静态服务（`python3 -m http.server 8791`）逐区块核对：桌面端 Hero / 三组预览 / 特性 / 下载 / FAQ 展开 / 关于 / 页脚正常；390px 窄屏无横向溢出，导航收起、预览纵向、特性单列。
 
 ## 二、SDK / API 能力边界（已复核，勿重复尝试）
