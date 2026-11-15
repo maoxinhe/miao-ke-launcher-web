@@ -5,138 +5,202 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>拾启｜LumeStart · 原生 Minecraft 启动器</title>
 <meta name="description" content="拾启｜LumeStart 是基于 .NET 8 WPF 的原生 Minecraft 启动器：八个页面全部原生实现，不依赖 WebView2 与任何网页层，下载、实例、模组、联机、存档一站式管理。" />
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316181C'/%3E%3Cpath d='M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z' fill='%23E8B45A'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317191C'/%3E%3Cpath d='M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z' fill='%23E7A94F'/%3E%3C/svg%3E" />
 <style>
 :root{
-  --ink:#16181C;
-  --ink-soft:#4A4E55;
-  --ink-faint:#8A8F96;
-  --paper:#FFFFFF;
-  --paper-2:#FAFAF8;
-  --line:#E3E4E1;
-  --line-strong:#CFD1CC;
-  --accent:#A85B1E;
-  --accent-soft:#F4E7D7;
-  --ok:#2F6B4F;
-  --max:1180px;
+  --ink:#171A1D;
+  --ink-2:#3C4248;
+  --ink-3:#6E747B;
+  --ink-4:#9AA0A6;
+  --paper:#FCFBF8;
+  --card:#FFFFFF;
+  --line:#E7E4DC;
+  --line-2:#D6D2C8;
+  --brand:#A65A1C;
+  --brand-2:#C77A34;
+  --brand-wash:#F7ECDD;
+  --green:#2E6A4F;
+  --max:1200px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0;background:var(--paper);color:var(--ink);
   font-family:"Noto Sans SC","HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
-  font-size:16px;line-height:1.75;
-  -webkit-font-smoothing:antialiased;
+  font-size:16px;line-height:1.78;-webkit-font-smoothing:antialiased;
 }
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 36px}
 @media (max-width:640px){.wrap{padding:0 20px}}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:.9em;background:#F3F1EA;padding:1px 5px;border-radius:3px}
 
-/* ---------- 顶栏 ---------- */
 header{
-  position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);
-  backdrop-filter:saturate(140%) blur(8px);
+  position:sticky;top:0;z-index:30;
+  background:rgba(252,251,248,.86);
+  backdrop-filter:saturate(160%) blur(10px);
   border-bottom:1px solid var(--line);
 }
-.nav{display:flex;align-items:center;gap:28px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.01em}
-.brand svg{width:26px;height:26px}
-.brand span.tiny{font-size:12px;font-weight:400;color:var(--ink-faint);letter-spacing:.06em}
-.nav .links{display:flex;gap:24px;font-size:14px;color:var(--ink-soft);margin-left:auto}
-.nav .links a{position:relative;padding:4px 0}
-.nav .links a:hover{color:var(--ink)}
-.nav .cta{font-size:14px;border:1px solid var(--line-strong);padding:7px 16px;border-radius:6px;color:var(--ink)}
-.nav .cta:hover{border-color:var(--ink)}
-@media (max-width:860px){.nav .links{display:none}}
+.nav{display:flex;align-items:center;gap:32px;height:66px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:-.01em;font-size:16px}
+.brand svg{width:28px;height:28px;flex:none}
+.brand .en{font-size:10.5px;font-weight:500;letter-spacing:.14em;color:var(--ink-4);transform:translateY(1px)}
+.nav nav{display:flex;gap:28px;font-size:14px;color:var(--ink-2);margin-left:auto}
+.nav nav a{padding:5px 0;border-bottom:1px solid transparent}
+.nav nav a:hover{color:var(--ink);border-bottom-color:var(--brand)}
+.nav .dl{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;
+  border:1px solid var(--ink);border-radius:5px;padding:7px 15px;background:var(--ink);color:#fff}
+.nav .dl:hover{background:#000}
+.nav .dl svg{width:14px;height:14px}
+@media (max-width:900px){.nav nav{display:none}}
 
-/* ---------- Hero ---------- */
-.hero{padding:76px 0 64px;border-bottom:1px solid var(--line)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center}
-@media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:36px}}
-.eyebrow{font-size:13px;color:var(--accent);letter-spacing:.02em;margin:0 0 14px}
-h1{
-  margin:0;font-size:clamp(34px,4.6vw,56px);line-height:1.18;letter-spacing:-.02em;font-weight:600;
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(900px 420px at 82% -8%, #F6E7D2 0%, rgba(246,231,210,0) 62%),
+    linear-gradient(180deg,#FFFFFF 0%,#FCFBF8 100%);
 }
-h1 em{font-style:normal;color:var(--accent)}
-.lede{margin:22px 0 0;color:var(--ink-soft);font-size:16.5px;max-width:34em}
-.btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-.btn{
-  display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:6px;
-  font-size:14.5px;font-weight:500;border:1px solid transparent;transition:.16s ease;
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;opacity:.3;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.9),transparent 72%);
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),transparent 72%);
 }
-.btn.primary{background:var(--ink);color:#fff}
-.btn.primary:hover{background:#000;transform:translateY(-1px)}
-.btn.ghost{border-color:var(--line-strong);color:var(--ink)}
-.btn.ghost:hover{border-color:var(--ink)}
+.hero-in{position:relative;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:56px;align-items:center;padding:86px 0 78px}
+@media (max-width:1000px){.hero-in{grid-template-columns:1fr;gap:44px;padding:56px 0 46px}}
+
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-2);
+  border:1px solid var(--line-2);background:#fff;border-radius:999px;padding:5px 13px 5px 6px}
+.kicker .tag{background:var(--ink);color:#fff;border-radius:999px;padding:2px 9px;font-size:11px}
+h1{margin:22px 0 0;font-size:clamp(38px,5vw,62px);line-height:1.12;letter-spacing:-.035em;font-weight:900}
+h1 .accent{display:block;color:var(--brand)}
+.lede{margin:20px 0 0;color:var(--ink-2);font-size:16.5px;line-height:1.85;max-width:31em}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:6px;font-size:14.5px;font-weight:600;transition:.16s ease}
+.btn.dark{background:var(--ink);color:#fff;box-shadow:0 8px 20px -10px rgba(23,26,29,.6)}
+.btn.dark:hover{background:#000;transform:translateY(-1px)}
+.btn.line{border:1px solid var(--line-2);background:#fff;color:var(--ink)}
+.btn.line:hover{border-color:var(--ink)}
 .btn svg{width:16px;height:16px}
-.meta{margin-top:16px;font-size:12.5px;color:var(--ink-faint);display:flex;gap:18px;flex-wrap:wrap}
-.hero-shot{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper-2)}
-.hero-shot img{width:100%;height:auto}
-.shot-cap{font-size:12px;color:var(--ink-faint);padding:10px 14px;border-top:1px solid var(--line);background:#fff}
+.note-row{margin-top:18px;display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-3)}
+.note-row span{display:inline-flex;align-items:center;gap:6px}
+.dot-ok{width:13px;height:13px;border-radius:50%;background:var(--green);position:relative;flex:none}
+.dot-ok::after{content:"";position:absolute;left:4px;top:3.5px;width:5px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg)}
 
-/* ---------- 数据条 ---------- */
-.stats{border-bottom:1px solid var(--line)}
-.stats-in{display:grid;grid-template-columns:repeat(4,1fr);divide:1px}
-.stat{padding:26px 0;border-right:1px solid var(--line)}
-.stat:first-child{padding-left:0}
-.stat:last-child{border-right:0}
-.stat b{display:block;font-size:26px;font-weight:600;letter-spacing:-.01em}
-.stat small{display:block;margin-top:4px;font-size:12.5px;color:var(--ink-faint)}
-@media (max-width:760px){.stats-in{grid-template-columns:repeat(2,1fr)}.stat{border-bottom:1px solid var(--line)}}
+.window{position:relative}
+.window::before{content:"";position:absolute;left:22px;right:22px;top:18px;bottom:-18px;background:var(--brand-wash);border-radius:14px;z-index:-1}
+.frame{background:#fff;border:1px solid var(--line-2);border-radius:10px;overflow:hidden;
+  box-shadow:0 32px 60px -34px rgba(30,26,18,.42),0 2px 0 #fff inset}
+.titlebar{height:42px;display:flex;align-items:center;gap:8px;padding:0 14px;
+  background:linear-gradient(180deg,#FDFCFA,#F6F4EF);border-bottom:1px solid var(--line)}
+.titlebar .lamp{width:11px;height:11px;border-radius:50%;background:#D9D5CC}
+.titlebar .lamp:nth-child(2){background:#E6C7A8}
+.titlebar .name{margin-left:8px;font-size:12px;color:var(--ink-3)}
+.titlebar .win{margin-left:auto;display:flex;gap:16px;color:#B6B1A6;font-size:11px}
+.frame img{width:100%;height:auto}
+.frame .caption{font-size:11.5px;color:var(--ink-3);padding:9px 14px;border-top:1px solid var(--line);background:#fff;display:flex;justify-content:space-between;gap:12px}
+.frame .caption em{font-style:normal;color:var(--ink-4)}
 
-/* ---------- 章节 ---------- */
-section{padding:76px 0}
-.sec-head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:40px;align-items:end;margin-bottom:44px}
-@media (max-width:860px){.sec-head{grid-template-columns:1fr;gap:14px}}
-h2{margin:0;font-size:clamp(24px,2.6vw,32px);line-height:1.3;font-weight:600;letter-spacing:-.01em}
-.sec-head p{margin:0;color:var(--ink-soft);font-size:15px}
+.strip{border-bottom:1px solid var(--line);background:#fff}
+.strip-in{display:grid;grid-template-columns:repeat(4,1fr)}
+.cell{padding:26px 28px;border-right:1px solid var(--line)}
+.cell:first-child{padding-left:0}
+.cell:last-child{border-right:0;padding-right:0}
+.cell b{display:block;font-size:27px;font-weight:700;letter-spacing:-.02em}
+.cell b i{font-style:normal;font-size:13px;font-weight:500;color:var(--ink-3);margin-left:3px}
+.cell small{display:block;margin-top:3px;font-size:12.5px;color:var(--ink-3)}
+@media (max-width:780px){.strip-in{grid-template-columns:1fr 1fr}.cell{padding:20px;border-bottom:1px solid var(--line)}
+ .cell:nth-child(2){border-right:0}.cell:nth-child(odd){padding-left:0}}
 
-.feature{display:grid;grid-template-columns:220px minmax(0,1fr);gap:36px;padding:30px 0;border-top:1px solid var(--line)}
-.feature:last-child{border-bottom:1px solid var(--line)}
-.feature h3{margin:0;font-size:17px;font-weight:600}
-.feature .tagline{font-size:12.5px;color:var(--ink-faint);margin-top:6px}
-.feature p{margin:0;color:var(--ink-soft);font-size:14.8px;max-width:62ch}
-.feature ul{margin:12px 0 0;padding-left:18px;color:var(--ink-soft);font-size:14.5px}
-.feature ul li{margin:4px 0}
-@media (max-width:760px){.feature{grid-template-columns:1fr;gap:10px;padding:24px 0}}
+section{padding:84px 0}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:24px;margin-bottom:44px}
+.head h2{margin:0;font-size:clamp(26px,3vw,38px);line-height:1.25;letter-spacing:-.03em;font-weight:800;max-width:16em}
+.head h2 span{color:var(--ink-4);font-weight:500;display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.head p{margin:0 0 4px;color:var(--ink-2);font-size:15px;max-width:38em;margin-left:auto}
+@media (max-width:860px){.head p{margin-left:0}}
 
-/* ---------- 截图 ---------- */
-.gallery{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.gallery figure{margin:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper-2)}
-.gallery figcaption{font-size:12px;color:var(--ink-faint);padding:10px 14px;background:#fff;border-top:1px solid var(--line)}
-@media (max-width:760px){.gallery{grid-template-columns:1fr}}
+.tour{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tour-in{display:grid;grid-template-columns:280px minmax(0,1fr);gap:44px;align-items:start}
+@media (max-width:900px){.tour-in{grid-template-columns:1fr;gap:26px}}
+.tabs{display:flex;flex-direction:column;border-left:2px solid var(--line)}
+.tab{text-align:left;background:none;border:0;border-left:2px solid transparent;margin-left:-2px;
+  padding:15px 0 15px 18px;cursor:pointer;font-family:inherit}
+.tab b{display:block;font-size:16.5px;font-weight:600;color:var(--ink-3)}
+.tab span{display:block;font-size:12.5px;margin-top:3px;color:var(--ink-3)}
+.tab[aria-selected="true"]{border-left-color:var(--brand)}
+.tab[aria-selected="true"] b{color:var(--brand)}
+.tab:hover b{color:var(--ink)}
+@media (max-width:900px){.tabs{flex-direction:row;overflow-x:auto;border-left:0;border-bottom:2px solid var(--line);gap:4px}
+ .tab{border-left:0;border-bottom:2px solid transparent;margin:0 0 -2px;padding:10px 14px 12px;white-space:nowrap}
+ .tab[aria-selected="true"]{border-bottom-color:var(--brand)}}
 
-/* ---------- 下载 ---------- */
-.download{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.dl-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:start}
-@media (max-width:900px){.dl-grid{grid-template-columns:1fr}}
-.dl-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px}
-.dl-card .ver{display:flex;align-items:baseline;gap:10px}
-.dl-card .ver b{font-size:22px;font-weight:600}
-.badge{font-size:11.5px;padding:2px 8px;border:1px solid var(--line-strong);border-radius:999px;color:var(--ink-soft)}
-.badge.live{border-color:#BFD8C9;background:#F1F7F3;color:var(--ok)}
-.dl-note{font-size:13px;color:var(--ink-soft);margin-top:10px}
-.dl-actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
-.filelist{margin-top:22px;border-top:1px solid var(--line);padding-top:16px;font-size:13px;color:var(--ink-soft)}
-.filelist div{display:flex;justify-content:space-between;padding:6px 0}
-.filelist span{color:var(--ink-faint)}
-.req h3{margin:0 0 10px;font-size:15px;font-weight:600}
-.req p{margin:0;font-size:14px;color:var(--ink-soft)}
-.req ul{margin:14px 0 0;padding-left:18px;font-size:14px;color:var(--ink-soft)}
+.showcase{position:relative}
+.showcase .frame{box-shadow:0 26px 50px -30px rgba(30,26,18,.4)}
+.shot{position:relative;background:#F5F3EE}
+.shot img{width:100%;transition:opacity .22s ease}
+.shot .pill{position:absolute;left:14px;top:14px;background:rgba(23,26,29,.86);color:#fff;
+  font-size:11.5px;padding:4px 10px;border-radius:999px}
+.tour-copy{margin-top:16px;font-size:14px;color:var(--ink-2);max-width:64ch}
+.tour-meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:11.5px;color:var(--ink-2);border:1px solid var(--line-2);border-radius:999px;padding:3px 10px;background:#fff}
 
-/* ---------- FAQ ---------- */
-.faq{max-width:780px}
-.faq details{border-bottom:1px solid var(--line);padding:18px 0}
-.faq summary{cursor:pointer;font-size:15.5px;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:18px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary .plus{color:var(--ink-faint);font-weight:400}
-.faq details[open] summary .plus{color:var(--accent)}
-.faq p{margin:10px 0 0;font-size:14.5px;color:var(--ink-soft);max-width:64ch}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.feat{background:var(--paper);padding:30px 26px 32px;position:relative}
+.feat:nth-child(4n+1){background:#fff}
+.feat .ico{width:34px;height:34px;border:1px solid var(--line-2);border-radius:7px;display:grid;place-items:center;background:#fff;color:var(--brand)}
+.feat .ico svg{width:18px;height:18px}
+.feat h3{margin:16px 0 6px;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.feat .en{font-size:10.5px;letter-spacing:.1em;color:var(--ink-4);text-transform:uppercase}
+.feat p{margin:12px 0 0;font-size:14px;line-height:1.8;color:var(--ink-2)}
+.feat .num{position:absolute;right:20px;top:26px;font-size:12px;color:var(--ink-4);font-variant-numeric:tabular-nums}
+@media (max-width:900px){.features{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.features{grid-template-columns:1fr}}
 
-footer{border-top:1px solid var(--line);padding:44px 0 54px;font-size:13px;color:var(--ink-faint)}
-.foot{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-start}
+.download{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dl-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:52px;align-items:start}
+@media (max-width:900px){.dl-grid{grid-template-columns:1fr;gap:32px}}
+.plate{border:1px solid var(--line-2);border-radius:10px;background:linear-gradient(180deg,#fff,#FCFAF5);
+  padding:30px;position:relative;overflow:hidden}
+.plate::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:var(--brand-wash);opacity:.8}
+.plate .row{display:flex;align-items:baseline;gap:10px;position:relative}
+.plate .v{font-size:34px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.plate .badge{font-size:11.5px;border:1px solid #BBD6C7;background:#F2F8F4;color:var(--green);border-radius:999px;padding:2px 9px}
+.plate .badge.gray{border-color:var(--line-2);background:#fff;color:var(--ink-3)}
+.plate .desc{margin:12px 0 0;font-size:14px;color:var(--ink-2);max-width:36em;position:relative}
+.plate .acts{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;position:relative}
+.spec{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line-2);font-size:12.5px;position:relative}
+.spec div{display:flex;justify-content:space-between;gap:16px;padding:5px 0;color:var(--ink-2)}
+.spec div span{color:var(--ink-4)}
+.release h3{margin:0 0 12px;font-size:15px;font-weight:700}
+.release ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:14px;line-height:1.9}
+.release .flow{margin-top:20px;border:1px solid var(--line);border-radius:8px;padding:16px 18px;background:var(--paper)}
+.release .flow b{display:block;font-size:11px;color:var(--ink-4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.release .flow ol{margin:0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.85}
+
+.faq-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:52px;align-items:start}
+@media (max-width:900px){.faq-grid{grid-template-columns:1fr;gap:24px}}
+.faq-list details{border-top:1px solid var(--line);padding:20px 0}
+.faq-list details:last-child{border-bottom:1px solid var(--line)}
+.faq-list summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font-size:15.5px;font-weight:600}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary i{font-style:normal;color:var(--ink-4);font-weight:400;transition:.16s}
+.faq-list details[open] summary i{color:var(--brand);transform:rotate(45deg)}
+.faq-list p{margin:12px 0 0;font-size:14.5px;color:var(--ink-2);max-width:62ch}
+.faq-side{border:1px solid var(--line);border-radius:10px;padding:26px;background:#fff}
+.faq-side h3{margin:0;font-size:16px;font-weight:700}
+.faq-side p{margin:10px 0 0;font-size:13.5px;color:var(--ink-2)}
+.faq-side a{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13.5px;color:var(--brand);font-weight:600}
+.faq-side a:hover{text-decoration:underline}
+
+footer{border-top:1px solid var(--line);padding:46px 0 56px;font-size:13px;color:var(--ink-3);background:#fff}
+.foot{display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-start}
+.foot .who{display:flex;align-items:center;gap:11px}
+.foot .who svg{width:26px;height:26px}
+.foot .who b{display:block;color:var(--ink);font-size:14.5px}
+.foot .who small{display:block;font-size:12.5px}
 .foot .links{display:flex;gap:22px;flex-wrap:wrap}
 .foot a:hover{color:var(--ink)}
 </style>
@@ -146,210 +210,240 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;font-size:13px;color
 <header>
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="拾启 LumeStart 首页">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#16181C"/><path d="M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z" fill="#E8B45A"/></svg>
-      <span>拾启</span><span class="tiny">LUMESTART</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17191C"/><path d="M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z" fill="#E7A94F"/></svg>
+      <span>拾启</span><span class="en">LUMESTART</span>
     </a>
-    <nav class="links" aria-label="主导航">
+    <nav aria-label="主导航">
+      <a href="#tour">界面</a>
       <a href="#features">特性</a>
-      <a href="#native">原生界面</a>
       <a href="#download">下载</a>
       <a href="#faq">常见问题</a>
     </nav>
-    <a class="cta" href="https://github.com/MaoKeDei/launcher_v1/releases" target="_blank" rel="noopener">GitHub Releases</a>
+    <a class="dl" href="#download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+      下载
+    </a>
   </div>
 </header>
 
 <main id="top">
 
-<!-- ===== Hero ===== -->
 <section class="hero">
-  <div class="wrap hero-grid">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-in">
     <div>
-      <p class="eyebrow">.NET 8 · WPF · Windows 10 / 11 · x64</p>
-      <h1>一个<em>不套网页</em>的<br>Minecraft 启动器</h1>
-      <p class="lede">拾启｜LumeStart 把启动、实例、模组、下载、存档、联机、账户、设置全部做成原生窗口。没有 WebView2，没有内嵌浏览器，也就没有白屏、没有加载等待、没有网页层里才能做的操作。</p>
-      <div class="btnrow">
-        <a class="btn primary" href="#download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
-          下载启动器
+      <div class="kicker"><span class="tag">1.1.0</span> 原生迁移完成，网页层已移除</div>
+      <h1>一个不套网页的<span class="accent">Minecraft 启动器</span></h1>
+      <p class="lede">拾启｜LumeStart 把启动、实例、模组、下载、存档、联机、账户、设置全部做成原生窗口。没有 WebView2，没有内嵌浏览器，也没有白屏与加载等待。</p>
+      <div class="cta-row">
+        <a class="btn dark" href="#download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+          下载 Windows 版
         </a>
-        <a class="btn ghost" href="https://github.com/MaoKeDei/launcher_v1" target="_blank" rel="noopener">发布仓库</a>
+        <a class="btn line" href="#tour">看看界面</a>
       </div>
-      <div class="meta">
-        <span>自包含包 · 无需另装 .NET 运行时</span>
-        <span>SHA256 校验 · 灰度更新</span>
+      <div class="note-row">
+        <span><i class="dot-ok"></i>自包含包，无需另装 .NET</span>
+        <span><i class="dot-ok"></i>SHA256 校验 · 灰度更新</span>
       </div>
     </div>
-    <figure class="hero-shot" style="margin:0">
-      <img src="assets/ui-settings.png" alt="拾启｜LumeStart 设置页：左侧原生侧栏、内存渐变滑条与下载源" />
-      <figcaption class="shot-cap">设置页 · 原生侧栏与内存渐变滑条（界面预览稿）</figcaption>
-    </figure>
+
+    <div class="window">
+      <div class="frame">
+        <div class="titlebar">
+          <span class="lamp"></span><span class="lamp"></span><span class="lamp"></span>
+          <span class="name">拾启｜LumeStart — 设置</span>
+          <span class="win"><span>—</span><span>□</span><span>×</span></span>
+        </div>
+        <img src="assets/ui-settings.png" alt="拾启｜LumeStart 设置页：原生侧栏、内存渐变滑条与下载源" />
+        <div class="caption"><span>设置 · 内存分配与下载源</span><em>界面还原稿，非实机截图</em></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ===== 数据条 ===== -->
-<div class="stats">
-  <div class="wrap stats-in">
-    <div class="stat"><b>8</b><small>页面全部原生实现</small></div>
-    <div class="stat"><b>0</b><small>网页层与 WebView2 依赖</small></div>
-    <div class="stat"><b>约 79 MB</b><small>自包含安装包大小</small></div>
-    <div class="stat"><b>3</b><small>更新下载源白名单</small></div>
+<div class="strip">
+  <div class="wrap strip-in">
+    <div class="cell"><b>8<i>个</i></b><small>页面全部原生实现</small></div>
+    <div class="cell"><b>0<i>行</i></b><small>网页层与 WebView2 依赖</small></div>
+    <div class="cell"><b>79<i>MB</i></b><small>自包含包体积，约旧版四成</small></div>
+    <div class="cell"><b>4<i>种</i></b><small>Forge / Fabric / NeoForge / Quilt</small></div>
   </div>
 </div>
 
-<!-- ===== 特性 ===== -->
+<section class="tour" id="tour">
+  <div class="wrap">
+    <div class="head">
+      <h2><span>Native UI</span>界面不是画出来的网页<br>是 XAML 窗口</h2>
+      <p>侧栏、列表、弹窗、滑条都由 WPF 绘制。下面三张是同一套界面的还原稿，切换左侧导航可以看不同页面。</p>
+    </div>
+
+    <div class="tour-in">
+      <div class="tabs" role="tablist" aria-label="界面页面">
+        <button class="tab" role="tab" aria-selected="true" data-i="0"><b>下载中心</b><span>队列 · 并发 · 断点续传</span></button>
+        <button class="tab" role="tab" aria-selected="false" data-i="1"><b>设置</b><span>内存滑条 · 下载源 · 存档</span></button>
+        <button class="tab" role="tab" aria-selected="false" data-i="2"><b>多人联机</b><span>陶瓦组件 · 房间端口</span></button>
+      </div>
+
+      <div class="showcase">
+        <div class="frame">
+          <div class="titlebar">
+            <span class="lamp"></span><span class="lamp"></span><span class="lamp"></span>
+            <span class="name" id="winname">拾启｜LumeStart — 下载中心</span>
+            <span class="win"><span>—</span><span>□</span><span>×</span></span>
+          </div>
+          <div class="shot">
+            <span class="pill" id="shotpill">下载中心</span>
+            <img id="shot" src="assets/ui-download.png" alt="下载中心：下载队列与官方版本清单" />
+          </div>
+        </div>
+        <p class="tour-copy" id="tourcopy">版本、模组、整合包、资源包、光影、Java 运行时统一进一条队列，最多两路并发。任务可暂停、继续、取消、清除，队列状态落在本地文件，重启后仍在。</p>
+        <div class="tour-meta" id="tourmeta">
+          <span class="chip">官方清单与镜像源可切</span>
+          <span class="chip">整合包直连 Modrinth</span>
+          <span class="chip">逐任务显示速度与剩余时间</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="features">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>把启动器做成桌面程序，<br>而不是一个网页壳</h2>
-      <p>网页套壳的代价不在"能不能用"，而在每次操作都要等一层浏览器：白屏、加载骨架、右键菜单、输入法、拖拽文件、系统托盘，处处错位。原生之后，这些都由 Windows 自己处理。</p>
+    <div class="head">
+      <h2><span>What changed</span>把启动器做成桌面程序<br>而不是一个网页壳</h2>
+      <p>网页套壳的代价不在“能不能用”，而在每次操作都要等一层浏览器：白屏、加载骨架、右键菜单、输入法、拖拽文件，处处错位。</p>
     </div>
 
-    <div class="feature">
-      <div>
-        <h3>原生界面</h3>
-        <div class="tagline">WPF · XAML</div>
+    <div class="features">
+      <div class="feat">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></div>
+        <span class="num">01</span>
+        <h3>无边框原生窗口</h3><div class="en">Window chrome</div>
+        <p>自绘标题栏，拖动、缩放、最大化按系统行为走。侧栏可收起到 64px 只留图标，页面切换是内存里的路由历史，后退前进与快捷键照桌面习惯工作。</p>
       </div>
-      <div>
-        <p>窗口、侧栏、列表、弹窗全部由 XAML 绘制。侧栏可收起到 64px 只留图标，页面切换是内存里的路由历史，后退/前进与窗口快捷键都按桌面习惯工作。</p>
-        <ul>
-          <li>无边框窗口 + 自绘标题栏，拖动、缩放、最大化符合系统行为</li>
-          <li>字体与图标随包分发，离线也不回退成宋体</li>
-          <li>设置页内存滑条为六色渐变轨道，拖动即时生效</li>
-        </ul>
+      <div class="feat">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></div>
+        <span class="num">02</span>
+        <h3>实例创建不走网页</h3><div class="en">Instances</div>
+        <p>选版本、选加载器、填内存、挑 Java，一个表单走完。加载器安装后回填真实版本号，失败给错误码；删除只作用于实例目录，不碰存档与账号。</p>
       </div>
-    </div>
-
-    <div class="feature">
-      <div>
-        <h3>实例与版本</h3>
-        <div class="tagline">Forge · Fabric · NeoForge · Quilt</div>
+      <div class="feat">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5"/><path d="M5 16v2h14v-2"/></svg></div>
+        <span class="num">03</span>
+        <h3>一条下载队列</h3><div class="en">Downloads</div>
+        <p>版本、模组、整合包、资源包、光影、Java 统一排队，两路并发。暂停、继续、取消、清除都可用，队列落盘，重启后进度还在。</p>
       </div>
-      <div>
-        <p>新建实例不再跳转网页：选版本、选加载器、填内存、挑 Java，一次表单走完。实例列表支持启动、重命名、复制、删除，删除只作用于实例目录，不碰存档与账号。</p>
-        <ul>
-          <li>加载器安装回填真实版本号，失败有错误码可查</li>
-          <li>启动直读本地 JSON，不再靠界面假进度条</li>
-          <li>游戏退出后按钮自动回弹，可连续启动</li>
-        </ul>
+      <div class="feat">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.2 2.5-5.2 5.5-5.2s5.5 2 5.5 5.2"/><path d="M17 8.5h4M19 6.5v4"/></svg></div>
+        <span class="num">04</span>
+        <h3>三种账户登录</h3><div class="en">Accounts</div>
+        <p>离线 UUID、微软设备码、外置皮肤站登录都在同一个账户窗口里，切换与删除也在这里。微软登录不需要内嵌浏览器。</p>
       </div>
-    </div>
-
-    <div class="feature">
-      <div>
-        <h3>下载中心</h3>
-        <div class="tagline">队列 · 并发 · 断点</div>
+      <div class="feat">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 12a5 5 0 015-5 4.6 4.6 0 011.4 9"/><path d="M17 12a5 5 0 00-4.6-5"/><path d="M4 8v4h4M20 16v-4h-4"/></svg></div>
+        <span class="num">05</span>
+        <h3>更新在客户端内完成</h3><div class="en">Self update</div>
+        <p>启动时比对版本与构建号，命中灰度才提示；下载整包后校验 SHA256，安全解压并只覆盖程序文件，<code>data/</code> 原地保留。</p>
       </div>
-      <div>
-        <p>版本、模组、整合包、资源包、光影、Java 运行时统一进一条队列，最多两路并发。任务可暂停、继续、取消、清除，队列状态落在本地文件，重启后仍在。</p>
-        <ul>
-          <li>官方清单与镜像源可切，国内网络不必硬扛</li>
-          <li>整合包与资源包直连 Modrinth，不必手动找链接</li>
-          <li>进度、速度、剩余时间逐任务显示</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="feature">
-      <div>
-        <h3>账户与联机</h3>
-        <div class="tagline">离线 · 微软 · 外置登录</div>
-      </div>
-      <div>
-        <p>账户窗口支持离线 UUID、微软设备码登录、外置皮肤站登录三种方式，切换与删除都在同一个列表里完成。联机页负责陶瓦联机组件下载、房间创建与端口探测。</p>
-        <ul>
-          <li>微软登录走设备码，不需要内嵌浏览器</li>
-          <li>离线 UUID 按 <code>OfflinePlayer:名称</code> 规则生成</li>
-          <li>端口被占用时有明确提示，不静默失败</li>
-        </ul>
+      <div class="feat">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v6c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <span class="num">06</span>
+        <h3>数据只存在本地</h3><div class="en">Local first</div>
+        <p>账号、实例、存档、下载队列都写在程序旁的 <code>data/</code>。上报只带版本、构建号、系统与运行时长，不带账号名与文件路径。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 原生界面截图 ===== -->
-<section id="native" style="background:var(--paper-2);border-top:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>界面一览</h2>
-      <p>下面两张是设计还原稿，用于说明布局与配色；实际运行效果以安装后的程序为准。</p>
-    </div>
-    <div class="gallery">
-      <figure>
-        <img src="assets/ui-download.png" alt="下载中心：下载队列与官方版本清单" />
-        <figcaption>下载中心 · 队列在跑，旧任务可暂停</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/ui-network.png" alt="多人联机：陶瓦联机组件与房间端口" />
-        <figcaption>多人联机 · 组件就位与端口探测</figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 下载 ===== -->
 <section class="download" id="download">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>下载</h2>
-      <p>发布产物统一放在公开仓库的 Releases 中。文件为整包 zip，解压即用，不写注册表、不装服务。</p>
+    <div class="head">
+      <h2><span>Download</span>下载</h2>
+      <p>产物统一放在公开仓库的 Releases 中，整包 zip，解压即用。不写注册表，不装后台服务。</p>
     </div>
+
     <div class="dl-grid">
-      <div class="dl-card">
-        <div class="ver"><b>1.1.0</b><span class="badge live">灰度发布中</span><span class="badge">build 38</span></div>
-        <p class="dl-note">原生界面全量迁移完成，移除 WebView2 与全部网页资源；更新检查与启动上报接入云端。</p>
-        <div class="dl-actions">
-          <a class="btn primary" href="https://github.com/MaoKeDei/launcher_v1/releases/latest" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+      <div class="plate">
+        <div class="row">
+          <span class="v">1.1.0</span>
+          <span class="badge">灰度发布中</span>
+          <span class="badge gray">build 38</span>
+        </div>
+        <p class="desc">原生界面全量迁移完成，删除 WebView2 与全部网页资源；更新检查、启动上报与失败回传已接入云端。</p>
+        <div class="acts">
+          <a class="btn dark" href="https://github.com/MaoKeDei/launcher_v1/releases/latest" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
             前往下载
           </a>
-          <a class="btn ghost" href="https://github.com/MaoKeDei/launcher_v1/releases" target="_blank" rel="noopener">历史版本</a>
+          <a class="btn line" href="https://github.com/MaoKeDei/launcher_v1/releases" target="_blank" rel="noopener">历史版本</a>
         </div>
-        <div class="filelist">
-          <div><span>文件名</span>LumeStart_&lt;日期&gt;_x64_&lt;序号&gt;.zip</div>
-          <div><span>形态</span>自包含（win-x64）</div>
-          <div><span>校验</span>SHA256（见发布页说明）</div>
-          <div><span>数据目录</span>程序同目录 <code>data/</code></div>
+        <div class="spec">
+          <div><span>文件</span><b>LumeStart_&lt;日期&gt;_x64_&lt;序号&gt;.zip</b></div>
+          <div><span>形态</span><b>自包含 · win-x64</b></div>
+          <div><span>校验</span><b>SHA256（见发布页）</b></div>
+          <div><span>数据目录</span><b>程序同目录 data/</b></div>
         </div>
       </div>
-      <div class="req">
+
+      <div class="release">
         <h3>运行要求</h3>
-        <p>Windows 10 1809 及以上或 Windows 11，64 位。自包含包已带运行时，无需另装 .NET。</p>
         <ul>
-          <li>建议 4 GB 以上内存；实例内存可在设置里单独分配</li>
-          <li>首次启动会在程序目录创建 <code>data/</code>，账号、实例、存档都在这里</li>
-          <li>更新由启动器自行下载整包并替换，玩家数据不会被覆盖</li>
-          <li>不需要安装 WebView2 Runtime，也不再请求任何网页资源</li>
+          <li>Windows 10 1809 及以上或 Windows 11，64 位</li>
+          <li>自包含包已带运行时，不需要另装 .NET</li>
+          <li>建议 4 GB 以上内存，实例内存可单独分配</li>
+          <li>首次启动在程序目录创建 <code>data/</code></li>
+          <li>不需要 WebView2 Runtime，也不再请求网页资源</li>
         </ul>
+        <div class="flow">
+          <b>发布与升级流程</b>
+          <ol>
+            <li>Windows 机器上用签名证书签 <code>LumeStart.exe</code></li>
+            <li>打包自包含 zip，本地算 size 与 SHA256</li>
+            <li>上传发行域，云端核对长度、校验和、域名</li>
+            <li>台账填版本与构建号，先灰度 10，再逐步放量</li>
+            <li>启动器自动检查与提示，更新失败回传事件</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== FAQ ===== -->
 <section id="faq">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>常见问题</h2>
-      <p>与安装、升级、数据安全相关的几个问题。</p>
+    <div class="head">
+      <h2><span>FAQ</span>常见问题</h2>
+      <p>关于联网、更新、数据安全与加载器支持的几个问题。</p>
     </div>
-    <div class="faq">
-      <details>
-        <summary><span>启动器需要联网吗？</span><span class="plus">+</span></summary>
-        <p>下载游戏、模组、加载器需要联网；已经装好的实例可以离线启动。启动时会上报一次版本与运行状态，用于判断是否需要更新，不包含任何账号信息。</p>
-      </details>
-      <details>
-        <summary><span>更新会不会覆盖我的存档和账号？</span><span class="plus">+</span></summary>
-        <p>不会。更新只覆盖程序文件，<code>data/</code> 目录（账号、实例、存档、下载队列、设备标识）原地保留。替换脚本使用只覆盖不删除的方式，不会清理未知文件。</p>
-      </details>
-      <details>
-        <summary><span>为什么安装包比旧版小了很多？</span><span class="plus">+</span></summary>
-        <p>旧版把整套网页资源与 WebView2 一起打包，体积接近 200 MB。移除网页层后只剩程序、运行时与字体图标，自包含包约 79 MB。</p>
-      </details>
-      <details>
-        <summary><span>支持哪些加载器？</span><span class="plus">+</span></summary>
-        <p>Forge、Fabric、NeoForge、Quilt 与官方版本。安装失败会给出错误码，可在实例详情里重试，不需要重新建实例。</p>
-      </details>
+    <div class="faq-grid">
+      <div class="faq-side">
+        <h3>还需要看源码吗</h3>
+        <p>源码仓库是私有的；发布仓库公开，只放产物与校验说明。想要参与测试或反馈问题，从发布页进。</p>
+        <a href="https://github.com/MaoKeDei/launcher_v1" target="_blank" rel="noopener">打开发布仓库 →</a>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary><span>启动器需要联网吗？</span><i>+</i></summary>
+          <p>下载游戏、模组、加载器需要联网；已经装好的实例可以离线启动。启动时会上报一次版本与运行状态，用于判断是否需要更新，不包含账号信息。</p>
+        </details>
+        <details>
+          <summary><span>更新会不会覆盖存档和账号？</span><i>+</i></summary>
+          <p>不会。更新只覆盖程序文件，<code>data/</code>（账号、实例、存档、下载队列、设备标识）原地保留。替换使用只覆盖不删除的方式，不会清理未知文件。</p>
+        </details>
+        <details>
+          <summary><span>为什么包比旧版小了很多？</span><i>+</i></summary>
+          <p>旧版把整套网页资源与 WebView2 一起打包，体积接近 200 MB。移除网页层后只剩程序、运行时与字体图标，自包含包约 79 MB。</p>
+        </details>
+        <details>
+          <summary><span>支持哪些加载器？</span><i>+</i></summary>
+          <p>Forge、Fabric、NeoForge、Quilt 与官方版本。安装失败会给出错误码，可在实例详情里重试，不必重新建实例。</p>
+        </details>
+        <details>
+          <summary><span>什么时候全量推送？</span><i>+</i></summary>
+          <p>当前先小范围灰度，观察启动成功率与更新失败率。数据稳定后逐步提高比例，异常时可以回滚到上一版本。</p>
+        </details>
+      </div>
     </div>
   </div>
 </section>
@@ -358,9 +452,9 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;font-size:13px;color
 
 <footer>
   <div class="wrap foot">
-    <div>
-      <div style="color:var(--ink);font-weight:600;margin-bottom:6px">拾启｜LumeStart</div>
-      <div>原生 Minecraft 启动器 · .NET 8 WPF</div>
+    <div class="who">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17191C"/><path d="M20 40c0-9 6-16 14-16 7 0 12 4 13 10l4 1-3 4H24c-2 0-4-2-4-5z" fill="#E7A94F"/></svg>
+      <div><b>拾启｜LumeStart</b><small>原生 Minecraft 启动器 · .NET 8 WPF</small></div>
     </div>
     <div class="links">
       <a href="https://github.com/MaoKeDei/launcher_v1" target="_blank" rel="noopener">发布仓库</a>
@@ -370,6 +464,35 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;font-size:13px;color
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var data=[
+    {name:'下载中心',pill:'下载中心',img:'assets/ui-download.png',alt:'下载中心：下载队列与官方版本清单',
+     copy:'版本、模组、整合包、资源包、光影、Java 运行时统一进一条队列，最多两路并发。任务可暂停、继续、取消、清除，队列状态落在本地文件，重启后仍在。',
+     chips:['官方清单与镜像源可切','整合包直连 Modrinth','逐任务显示速度与剩余时间']},
+    {name:'设置',pill:'设置',img:'assets/ui-settings.png',alt:'设置页：原生侧栏、内存渐变滑条与下载源',
+     copy:'内存滑条是六色渐变轨道，拖动即时生效；下载源、存档目录、Java 路径都在这一页。改完不需要重启，回到主页即可按新配置启动。',
+     chips:['六色渐变内存滑条','官方源与镜像源切换','存档与 Java 路径可改']},
+    {name:'多人联机',pill:'多人联机',img:'assets/ui-network.png',alt:'多人联机：陶瓦联机组件与房间端口',
+     copy:'联机页负责陶瓦联机组件的下载与校验、房间创建和端口探测。端口被占用会明确提示，不会静默失败。',
+     chips:['组件下载与校验','房间端口探测','占用冲突有提示']}
+  ];
+  var tabs=document.querySelectorAll('.tab'),shot=document.getElementById('shot'),
+      pill=document.getElementById('shotpill'),win=document.getElementById('winname'),
+      cp=document.getElementById('tourcopy'),meta=document.getElementById('tourmeta');
+  function pick(i){
+    var d=data[i];
+    tabs.forEach(function(t){t.setAttribute('aria-selected',String(+t.dataset.i===i))});
+    shot.style.opacity=0;
+    setTimeout(function(){shot.src=d.img;shot.alt=d.alt;shot.style.opacity=1;},120);
+    pill.textContent=d.pill; win.textContent='拾启｜LumeStart — '+d.name;
+    cp.textContent=d.copy;
+    meta.innerHTML=d.chips.map(function(c){return '<span class="chip">'+c+'</span>'}).join('');
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){pick(+t.dataset.i)})});
+})();
+</script>
 
 </body>
 </html>
