@@ -22,6 +22,13 @@
 - 现有安全加速站点（camzy.tech）下的 online 域名，CNAME 规律 `<sub>.camzy.tech.eo.dnse0.com`；**该规律不可套用到 Makers Pages 静态站**，Makers 分配的是另一组 CNAME 目标。
 - 结论：Makers 项目创建、首次静态部署、自定义域名添加这三步当前只能在 EdgeOne 控制台人工完成；SDK 侧无法代做。
 
+## 二点五、已部署（2026-11-15）
+
+- 通过 EdgeOne Makers 连接器完成首次部署，单文件 HTML 已上线：
+  `https://mcp.edgeone.site/share/zVhi33YtidJQZyuBLzJ1M`
+- 该地址是**分享域名**，不是 `launcher.camzy.tech`。自定义域名仍需在 EdgeOne 控制台给该项目绑定，之后拿到 CNAME 目标再改 DNS。
+- 本次部署所用 HTML 内联了全部样式，图片走 jsDelivr 的仓库直链（`cdn.jsdelivr.net/gh/maoxinhe/miao-ke-launcher-web@main/assets/…`）。
+
 ## 三、控制台人工步骤（拿到 Makers 分配的 CNAME 后再配 DNS）
 
 1. 登录 EdgeOne 控制台 → **Makers（静态站点 / 站点托管）** → **创建项目 / 导入 Git 仓库**，授权并选择 `maoxinhe/miao-ke-launcher-web`。
